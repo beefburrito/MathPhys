@@ -44,7 +44,7 @@ public class Clasher {
 
         // create the walls
         createWalls();
-
+        //
         // create the ball
         balls.add(new Ball(600, 400, 30, Color.blue, 10));
         balls.add(new Ball(500, 500, 30, Color.red, 10));
