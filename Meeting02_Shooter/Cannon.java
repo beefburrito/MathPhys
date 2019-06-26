@@ -1,4 +1,4 @@
-package Meeting02_Shooter;
+//package Meeting02_Shooter;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -49,6 +49,10 @@ class Cannon {
         g2.setColor(tempColor);
     }
 
+    public int getPositionX() {
+        return positionX;
+    }
+
     public double getBarrelWidth() {
         return barrelWidth;
     }
@@ -71,7 +75,7 @@ class Cannon {
     public void rotateLeft() {
         angle += ANGLE_INCREMENT;
     }
-
+    
     public void rotateRight() {
         angle -= ANGLE_INCREMENT;
     }
