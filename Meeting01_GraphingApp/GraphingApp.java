@@ -13,8 +13,11 @@ package Meeting01_GraphingApp;
     - Render the new updates in the drawing layer
     - Change current display layer with the previously drawn layer.
 
-    TODO:
+   TODO:
      1. Play with the app. What does each field do? What's the difference if you change one field? What if you use smaller/bigger increment factor?
+     >> Length of x/y axis sets the maximum value of the x/y coordinate to be displayed
+     >> Start point x sets where the lines start being graphed
+     >> Incremental factor sets the frequency at which 'points' will be graphed lower number means more accurate graph display
      2. Change the function into another continuous linear/polynomial function
      3. Change the function into other functions with discontinuity, such as 1/x. What happened?
      4. Change the function into trigonometric functions or any function that needs java.lang.Math library
@@ -40,6 +43,7 @@ class GraphingApp {
     private JTextField fieldLengthY;
     private JTextField fieldBegin;
     private JTextField fieldIncrement;
+    private JButton button;
 
     private int cpWidth = 270;      // set control panel's width
 
@@ -53,17 +57,17 @@ class GraphingApp {
 
         // setup control panel itself
         controlPanel = new JPanel(new GridLayout(5, 2, 5, 0));
-        createControlPanel();
+        createControlPanel(controlPanel);
         controlPanel.setBounds(0, 0, cpWidth, 300);
         frame.add(controlPanel);
 
         // setup drawing area
-        drawingArea = new DrawingArea(frame.getWidth(), frame.getHeight(), cpWidth);
+        drawingArea = new DrawingArea();
         frame.add(drawingArea);
     }
 
     // add members to control panel
-    private void createControlPanel() {
+    private void createControlPanel(JPanel panel) {
         // the x-axis would be shown from -lengthX to lengthX
         JLabel labelLengthX = new JLabel("Length of X axis");
         controlPanel.add(labelLengthX);
@@ -89,22 +93,8 @@ class GraphingApp {
         controlPanel.add(fieldIncrement);
 
         // clicking the button will start the animation
-        JButton button = new JButton("Begin graphing");
+        button = new JButton("Begin graphing");
         button.addActionListener(e -> sendValuesToDrawer());
         controlPanel.add(button);
-    }
-
-    // get values from text fields
-    private void sendValuesToDrawer() {
-        double lengthX = Double.parseDouble(fieldLengthX.getText());
-        double lengthY = Double.parseDouble(fieldLengthY.getText());
-        double begin = Double.parseDouble(fieldBegin.getText());
-        double increment = Double.parseDouble(fieldIncrement.getText());
-        drawingArea.beginDrawing(lengthX, lengthY, begin, increment);
-        drawingArea.beginDrawing(lengthX, lengthY, begin, increment);
-    }
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(GraphingApp::new);
     }
 }
