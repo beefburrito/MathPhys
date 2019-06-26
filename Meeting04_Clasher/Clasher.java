@@ -1,6 +1,10 @@
-package Meeting04_Clasher;
+//package Meeting04_Clasher;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
@@ -42,7 +46,8 @@ public class Clasher {
         createWalls();
 
         // create the ball
-        balls.add(new Ball(300, 200, 50, Color.blue, 10));
+        balls.add(new Ball(600, 400, 30, Color.blue, 10));
+        balls.add(new Ball(500, 500, 30, Color.red, 10));
         hitter = new Ball(400, 400, 20, Color.green, 4);
         balls.add(hitter);
         destination = new Vector(hitter.getPositionX(), hitter.getPositionY());
@@ -84,16 +89,16 @@ public class Clasher {
         });
 
         drawingArea.start();
-    }
-
+}
     private void createWalls() {
         // vertical wall must be defined in clockwise direction
         // horizontal wall must be defined in counter clockwise direction
 
-        walls.add(new Wall(1200, 100, 100, 100, Color.black));	// horizontal top
-        walls.add(new Wall(100, 600, 1200, 600, Color.black));  // horizontal bottom
-        walls.add(new Wall(1200, 100, 1200, 600, Color.black));  // vertical right
-        walls.add(new Wall(100, 600, 100, 100, Color.black));  // vertical left
+        walls.add(new Wall(200, 200, 550, 0, Color.black));	//upper left
+        walls.add(new Wall(200, 200, 400, 500, Color.black));  // bottom left
+        walls.add(new Wall(700, 500, 900, 200, Color.black));  // bottom right
+        walls.add(new Wall(550, 0, 900, 200, Color.black));  // bottom left
+        walls.add(new Wall(400, 500, 700, 500, Color.black)); //bottom
     }
 
     public static void main(String[] args) {
