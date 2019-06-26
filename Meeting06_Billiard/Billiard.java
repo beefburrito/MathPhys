@@ -1,4 +1,4 @@
-package Meeting06_Billiard;
+//package Meeting06_Billiard;
 
 /*
 	Matfis pertemuan 6
@@ -23,7 +23,7 @@ import javax.swing.JFrame;
 public class Billiard {
 	private JFrame frame;
 	private int frameHeight;
-
+	private Ball hitter;
 	//The collections of walls to be drawn
 	private ArrayList<Wall> walls = new ArrayList<>();
 	private ArrayList<Ball> balls = new ArrayList<>();
@@ -41,6 +41,38 @@ public class Billiard {
 		createObjects();
 
 		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frameHeight, balls, walls);
+		/*
+		frame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                drawingArea.setPress(true);
+                destination.setX((double) e.getX());
+                destination.setY((double) e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+
+                double distanceX = e.getX() - hitter.getPositionX();
+                double distanceY = e.getY() - hitter.getPositionY();
+                double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                hitter.setVelocityX(-drawingArea.getTime() * distanceX / distance);
+                hitter.setVelocityY(-drawingArea.getTime() * distanceY / distance);
+
+                drawingArea.setPress(false);
+            }
+		});
+		frame.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                destination.setX((double) e.getX());
+                destination.setY((double) e.getY());
+            }
+        });*/
 		frame.add(drawingArea);
 
 		drawingArea.start();
@@ -60,13 +92,25 @@ public class Billiard {
 		walls.add(new Wall(wallWidth + wallX, wallHeight + wallY, wallX, wallHeight + wallY));	// right wall
 
 		Random randomGenerator = new Random();
-
-		for (int i = 0; i < 3; i++) {
-			int positionX = randomGenerator.nextInt(wallWidth - (int) (Ball.RADIUS)) + wallX + (int) Ball.RADIUS;
-			int positionY = randomGenerator.nextInt(wallHeight - (int) (Ball.RADIUS)) + wallY + (int) Ball.RADIUS;
-			Color color = new Color(randomGenerator.nextInt(255), randomGenerator.nextInt(255), randomGenerator.nextInt(255));
-			balls.add(new Ball(positionX, positionY, color));
+		int ballCounter = 0;
+		double y;
+		double x = frame.getWidth() * 0.66;     //Starting x-axis
+		double cy = frame.getHeight() / 2.0; //Starting y-axis
+		for (int i = 1; i <= 5; i++) 
+		{
+			y = cy;
+			x = x + (30.0 * Math.sqrt(3.0));
+			y = y - (i - 1) * 30.0;
+			for (int j = 0; j < i; j++)
+			{
+				Color color = new Color(randomGenerator.nextInt(255), randomGenerator.nextInt(255), randomGenerator.nextInt(255));  //Color randomizer
+				balls.add(new Ball(x,y,color));
+				y = y + (2*30.0);
+			}
+		
 		}
+		hitter = new Ball(frame.getWidth()/3, frameHeight/2, Color.BLACK);
+		balls.add(hitter);
 	}
 
 	public static void main(String[] args) {
