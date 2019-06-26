@@ -39,3 +39,4 @@ public class Pendulum extends JFrame {
 			EventQueue.invokeLater(Pendulum::new);
 		}
 }
+
