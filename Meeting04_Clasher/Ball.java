@@ -1,4 +1,4 @@
-package Meeting04_Clasher;
+//package Meeting04_Clasher;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -103,12 +103,12 @@ public class Ball {
                 //calculate the normal vector of the centre vector (by rotating 90 degrees)
                 double NVectorX = -CVectorY;
                 double NVectorY =  CVectorX;
-
                 //projecting the ball's velocity to the centre and normal vector of the two centre balls
                 double V1x  = CVectorX * this.velocityX + CVectorY * this.velocityY;
                 double V1y  = NVectorX * this.velocityX + NVectorY * this.velocityY;
 
                 double V2x  = CVectorX * b.getVelocityX() + CVectorY * b.getVelocityY();
+
                 double V2y = NVectorX * b.getVelocityX() + NVectorY * b.getVelocityY();
 
                 //calculate the new velocity after collision
@@ -154,6 +154,12 @@ public class Ball {
                 //if the ball collided with a horizontal wall
                 else if(w.getHeight() == 0) {
                     velocityY *= -1;
+                } else {
+                    Vector normal = w.normalLine(); // Get the wall's normal vector
+                    double c = velocityX*normal.getX() + velocityY*normal.getY();
+                    Vector proj = new Vector(c*normal.getX(), c*normal.getY()); // proj_N V = (vx*nx + vy*ny)*<nx , ny>
+                    velocityX = -2*proj.getX() + velocityX; // V' = -2*proj + v
+                    velocityY = -2*proj.getY() + velocityY;
                 }
             }
         }
