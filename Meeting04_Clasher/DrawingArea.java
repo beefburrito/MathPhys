@@ -1,4 +1,4 @@
-package Meeting04_Clasher;
+//package Meeting04_Clasher;
 
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.awt.Font;
 
 public class DrawingArea extends JPanel {
     private double time = 0;
@@ -94,7 +95,11 @@ public class DrawingArea extends JPanel {
             //clear screen
             g.setColor(Color.white);
             g.fillRect(0, 0, getWidth(), getHeight());
-
+            
+            g.setColor(Color.black);
+            g.setFont(new Font("Consolas",Font.PLAIN,20));
+            g.drawString("Velocity X: " + (int)Math.abs(hitter.getVelocityX())*10, 25, 25);
+            g.drawString("Velocity Y: " + (int)Math.abs(hitter.getVelocityY())*10, 25, 40);
             for(Ball b : balls) {
                 b.draw(g);
             }
