@@ -1,4 +1,4 @@
-package Meeting04_Clasher;
+//package Meeting04_Clasher;
 
 public class Vector {
     private double x;
