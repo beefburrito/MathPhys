@@ -1,4 +1,4 @@
-package Meeting03_Dribble;
+//package Meeting03_Dribble;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +12,7 @@ public class DrawingArea extends JPanel {
     private ArrayList<Wall> walls;
     private Thread animator;
     private BufferedImage drawingArea;
+    private boolean pause = false;
 
     public DrawingArea(int width, int height, ArrayList<Ball> balls, ArrayList<Wall> walls) {
         super(null);
@@ -22,11 +23,21 @@ public class DrawingArea extends JPanel {
         this.walls = walls;
         animator = new Thread(this::eventLoop);
     }
-
+    public void addBall(Ball ball) {
+        balls.add(ball);
+    }
+    public void delBall(int index) {
+        balls.remove(index - 1);
+    }
     public void start() {
         animator.start();
     }
-
+    public ArrayList<Wall> getWalls() {
+        return walls;
+    }
+    public void setWall(int index, double x0, double x1, double y0, double y1) {
+        walls.get(index-1).setWall(x0, x1, y0, y1);
+    }
     private void eventLoop() {
         drawingArea = (BufferedImage) createImage(width, height);
         while (true) {
@@ -44,6 +55,7 @@ public class DrawingArea extends JPanel {
 
     private void update()
     {
+        if(pause) return;
         for(Ball b : balls)
         {
             b.move();
@@ -59,11 +71,15 @@ public class DrawingArea extends JPanel {
             Graphics g = drawingArea.getGraphics();
 
             //clear screen
-            g.setColor(Color.white);
+            g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
+            g.setFont(new Font("Consolas", Font.PLAIN, 20));
+            g.setColor(Color.BLACK);
+            g.drawString("Press Space to show the control panel.", 20, 30);
 
-            for(Ball b : balls) {
-                b.draw(g);
+            
+            for(int i = 0; i < balls.size(); i++) {
+                balls.get(i).draw(g);
             }
 
             for(Wall w : walls) {
