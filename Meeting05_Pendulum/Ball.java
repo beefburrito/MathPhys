@@ -62,7 +62,7 @@ public class Ball {
 			rope.setY2(this.positionY);
 		}
 	}
-	
+	//
 	// function to move the ball's position in screen coordinate based on its velocity while considering fraction in the movement
 	public void move()
 	{		
