@@ -1,4 +1,4 @@
-package Meeting03_Dribble;
+//package Meeting03_Dribble;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -80,5 +80,23 @@ public class Wall {
 
     public double getWidth() {
         return width;
+    }
+    public double getX0() {
+        return startX;
+    }
+    public double getX1() {
+        return endX;
+    }
+    public double getY0() {
+        return startY;
+    }
+    public double getY1() {
+        return endY;
+    }
+    public void setWall(double x0, double x1, double y0, double y1) {
+        startX = x0;
+        endX = x1;
+        startY = y0;
+        endY = y1;
     }
 }
