@@ -1,10 +1,11 @@
-package Meeting02_Shooter;
+//package Meeting02_Shooter;
 
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.*;
 
 class DrawingArea extends JPanel {
     public final static int GRAPH_SCALE = 30;
@@ -14,13 +15,11 @@ class DrawingArea extends JPanel {
     private int height;
     private int originX;        // the origin points (0, 0)
     private int originY;
-    private int lengthX;        // how many numbers shown along absis and ordinate
-    private int lengthY;
     private Image drawingArea;
-    private Thread animator;    // thread to draw the
+    private Thread animator;    // thread to draw the animation
     private Cannon cannon;
-    private Bullet bullet;
-
+    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+    private Target target;
     // setup the drawing area
     public DrawingArea(int width, int height, int cpSize) {
         super(null);
@@ -30,17 +29,19 @@ class DrawingArea extends JPanel {
         drawingArea = createImage(this.width, this.height);
 
         originX = this.width / 4;
-        originY = this.height / 4;
-        lengthX = (this.width - originX) / GRAPH_SCALE;
-        lengthY = (this.height - originY) / GRAPH_SCALE;
-
+        originY = this.height / 2;
         // trigger drawing process
         drawingArea = createImage(this.width, this.height);
         animator = new Thread(this::eventLoop);
     }
 
+    public double getTime() {
+        return time;
+    }
+
     public void start() {
         animator.start();
+        target = new Target(40, getWidth()/2, 500, 50);
     }
 
     public void setCannon(Cannon cannon) {
@@ -48,8 +49,9 @@ class DrawingArea extends JPanel {
     }
 
     public void setBullet(Bullet bullet) {
-        this.bullet = bullet;
-        this.bullet.setTime(time);
+        bullet.shoot();
+        bullet.setTime(time);
+        bullets.add(bullet);
     }
 
     public int getOriginX() {
@@ -77,11 +79,29 @@ class DrawingArea extends JPanel {
 
     private void update() {
         time += TIME_INCREMENT;
-        if (bullet != null && bullet.isShot()) {
-            bullet.move(time);
-            if (bullet.getPositionY() > getHeight()) {
-                bullet.stopShoot();
+        for(int i=0; i<bullets.size(); i++) {
+            if (bullets.get(i) != null && bullets.get(i).isShot()) {
+                bullets.get(i).move(time);
+                if (bullets.get(i).getPositionY() > getHeight()) {
+                    bullets.get(i).stopShoot();
+                }
             }
+        }
+        target.move(time);
+        int targetCenterX = target.positionX + (int)target.radius;
+        int targetCenterY = target.positionY + (int)target.radius;
+        for(int i=0; i<bullets.size(); i++) {
+            if(bullets.get(i).getPositionX() + bullets.get(i).getRadius() > targetCenterX - target.radius &&
+                bullets.get(i).getPositionX() + bullets.get(i).getRadius() < targetCenterX + target.radius &&
+                bullets.get(i).getPositionY() + bullets.get(i).getRadius() > targetCenterY - target.radius &&
+                bullets.get(i).getPositionY() + bullets.get(i).getRadius() < targetCenterY + target.radius) {
+                    target.changeColor(Color.YELLOW);
+
+                    bullets.remove(i);
+                    Toolkit.getDefaultToolkit().beep();
+                } else {
+                    target.changeColor(Color.BLUE);
+                }
         }
     }
 
@@ -96,24 +116,16 @@ class DrawingArea extends JPanel {
 
             g.setColor(Color.black);
             //draw the x-axis and y-axis
-            g.drawLine(0, originY, getWidth(), originY);
-            g.drawLine(originX, 0, originX, getHeight());
-
-            //print numbers on the x-axis and y-axis, based on the scale
-            for (int i = 0; i < lengthX; i++) {
-                g.drawString(Integer.toString(i), (originX + (i * GRAPH_SCALE)), originY);
-                g.drawString(Integer.toString(-1 * i), (originX + (-i * GRAPH_SCALE)), originY);
-            }
-            for (int i = 0; i < lengthY; i++) {
-                g.drawString(Integer.toString(-1 * i), originX, (originY + (i * GRAPH_SCALE)));
-                g.drawString(Integer.toString(i), originX, (originY + (-i * GRAPH_SCALE)));
-            }
+            g.drawLine(originX+150, 0, originX+150, getHeight());
 
             // draw cannon and bullet
             cannon.draw(g);
-            if (bullet != null && bullet.isShot()) {
-                bullet.draw(g);
+            for(int i=0; i<bullets.size(); i++) {
+                if (bullets.get(i) != null && bullets.get(i).isShot()) {
+                    bullets.get(i).draw(g);
+                }
             }
+            target.draw(g);
         }
     }
 
