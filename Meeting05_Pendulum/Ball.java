@@ -1,7 +1,9 @@
-package Meeting05_Pendulum;
+//package Meeting05_Pendulum;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.lang.Math;
 
 public class Ball {
 	// (positionX,positionY) the position of the ball in screen coordinate
@@ -95,6 +97,7 @@ public class Ball {
 			
 	}
 
+
 	/**
 	 * get the state of the ball, that is whether it's attached to a rope or not
 	 * @return true if this ball is attached to a rope, false otherwise
@@ -171,6 +174,25 @@ public class Ball {
 		this.velocity.x = vx;
 	}	
 
+	public void collisionDetection(ArrayList<Ball> balls){
+		for (Ball b : balls){
+			if (b != this && (Math.sqrt(Math.pow(this.positionX-b.positionX,2)+
+			Math.pow(this.positionY-b.positionY,2))<=b.radius+this.radius)){
+				this.setVx(-0.5*(1-e)*b.velocity.getX());
+				b.setVx(0.5*(1-e)*this.velocity.getX());
+				System.out.println("Hello");
+			}
+		}
+	}
+
+	public double getVx()
+	{
+		return velocity.x;
+	}
+	public double getVy()
+	{
+		return velocity.y;
+	}
 	public boolean equals(Object otherObj)
 	{
 		if(otherObj == null)
