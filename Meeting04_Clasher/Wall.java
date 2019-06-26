@@ -1,4 +1,4 @@
-package Meeting04_Clasher;
+//package Meeting04_Clasher;
 
 import java.awt.Color;
 import java.awt.Graphics;
