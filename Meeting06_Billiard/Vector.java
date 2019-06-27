@@ -1,4 +1,4 @@
-package Meeting06_Billiard;
+//package Meeting06_Billiard;
 
 public class Vector {
 	double x;
