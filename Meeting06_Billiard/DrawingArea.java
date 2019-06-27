@@ -1,4 +1,4 @@
-package Meeting06_Billiard;
+//package Meeting06_Billiard;
 
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -14,20 +14,26 @@ public class DrawingArea extends JPanel {
     private boolean press = false;
     private int height;
     private int width;
+    private Vector destination;
     private ArrayList<Ball> balls;
     private ArrayList<Wall> walls;
     private Thread animator;
     private BufferedImage drawingArea;
+    private Line2D guideline;
+    private Ball hitter;
 
-    public DrawingArea(int width, int height, ArrayList<Ball> balls, ArrayList<Wall> walls) {
+    public DrawingArea(int width, int height, ArrayList<Ball> balls, ArrayList<Wall> walls, Vector destination, Ball hitter) {
         super(null);
         this.height = height;
         this.width = width;
         setBounds(0, 0, width, height);
         this.balls = balls;
         this.walls = walls;
+        this.destination = destination;
+        this.hitter = hitter;
 
         animator = new Thread(this::eventLoop);
+        guideline = new Line2D.Double(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }
 
     public void start() {
@@ -73,6 +79,7 @@ public class DrawingArea extends JPanel {
         {
             b.move();
         }
+        guideline.setLine(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }
 
     private void render()
@@ -92,6 +99,10 @@ public class DrawingArea extends JPanel {
 
             for(Wall w : walls) {
                 w.draw(g);
+            }
+            if (guideline != null) {
+                g.setColor(Color.red);
+                g.drawLine((int) guideline.getX1(), (int) guideline.getY1(), (int) guideline.getX2(), (int) guideline.getY2()-(int)hitter.RADIUS);
             }
 
         }
