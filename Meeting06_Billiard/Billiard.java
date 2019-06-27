@@ -16,6 +16,8 @@
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
@@ -24,6 +26,7 @@ public class Billiard {
 	private JFrame frame;
 	private int frameHeight;
 	private Ball hitter;
+	private Vector destination;
 	//The collections of walls to be drawn
 	private ArrayList<Wall> walls = new ArrayList<>();
 	private ArrayList<Ball> balls = new ArrayList<>();
@@ -39,9 +42,9 @@ public class Billiard {
 		frameHeight = frame.getHeight() - frame.getInsets().top;
 
 		createObjects();
-
-		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frameHeight, balls, walls);
-		/*
+		destination = new Vector(hitter.getPositionX(),hitter.getPositionY());
+		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frameHeight, balls, walls,destination,hitter);
+		
 		frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -72,7 +75,7 @@ public class Billiard {
                 destination.setX((double) e.getX());
                 destination.setY((double) e.getY());
             }
-        });*/
+        });
 		frame.add(drawingArea);
 
 		drawingArea.start();
@@ -104,12 +107,12 @@ public class Billiard {
 			for (int j = 0; j < i; j++)
 			{
 				Color color = new Color(randomGenerator.nextInt(255), randomGenerator.nextInt(255), randomGenerator.nextInt(255));  //Color randomizer
-				balls.add(new Ball(x,y,color));
+				balls.add(new Ball(x,y,color,5));
 				y = y + (2*30.0);
 			}
 		
 		}
-		hitter = new Ball(frame.getWidth()/3, frameHeight/2, Color.BLACK);
+		hitter = new Ball(frame.getWidth()/3, frameHeight/2, Color.BLACK,5);
 		balls.add(hitter);
 	}
 
