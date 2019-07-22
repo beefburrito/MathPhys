@@ -20,7 +20,7 @@ resistance = random.randint(-9,9)
 text = font.render('Score:' + str(score) , True, (0, 0, 128) , (64,64,64)) 
 text = font.render('Life:' + str(life) , True, (0, 0, 128) , (64,64,64)) 
 textRect = text.get_rect()  
-textRect.center = (50, hScreen //5) 
+textRect.center = (50, 80) 
 
 class target(object):
     def __init__(self,x,y,color,length,height):
@@ -78,7 +78,7 @@ def redrawWindow():
     wind = font.render('Wind: ' + str(resistance) , True, (0, 0, 128) , (64,64,64))
     life_points = font.render('Life: ' + str(life) , True, (0, 0, 128) , (64,64,64)) 
     textRect2 = wind.get_rect()  
-    textRect2.center = (60, hScreen //3)  
+    textRect2.center = (65, 50)  
     rectLife = life_points.get_rect()
     win.blit(life_points,rectLife) 
     win.blit(text,textRect) 
