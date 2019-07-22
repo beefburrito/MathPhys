@@ -20,7 +20,7 @@ resistance = random.randint(-9,9)
 text = font.render('Score:' + str(score) , True, (0, 0, 128) , (64,64,64)) 
 text = font.render('Life:' + str(life) , True, (0, 0, 128) , (64,64,64)) 
 textRect = text.get_rect()  
-textRect.center = (wScreen //2 , hScreen //2) 
+textRect.center = (50, hScreen //5) 
 
 class target(object):
     def __init__(self,x,y,color,length,height):
@@ -62,7 +62,6 @@ class powergauge(object):
         self.height = height
     def draw(self,win):
         pygame.draw.rect(win,(255,255,255),(self.x,self.y,self.width,self.height))
-        #pygame.draw.rect(win,(255,0,0),[100,200,50,150])
 
 class powerbar(object):
     def __init__(self,x,y,width,height):
@@ -79,15 +78,15 @@ def redrawWindow():
     wind = font.render('Wind: ' + str(resistance) , True, (0, 0, 128) , (64,64,64))
     life_points = font.render('Life: ' + str(life) , True, (0, 0, 128) , (64,64,64)) 
     textRect2 = wind.get_rect()  
-    textRect2.center = (wScreen //2 , hScreen //3)  
+    textRect2.center = (60, hScreen //3)  
     rectLife = life_points.get_rect()
     win.blit(life_points,rectLife) 
     win.blit(text,textRect) 
     win.blit(wind,textRect2)
     paperBall.draw(win)
     trash.draw(win)
-    powerMeter.draw(win)
-    bar.draw(win)
+    #powerMeter.draw(win)
+    #bar.draw(win)
     pygame.draw.line(win,(255,255,255), line[0],line[1])
     pygame.display.update()
 #def highScore():
@@ -121,8 +120,8 @@ def targetCollision():
 
 paperBall = ball(300,490,7,(255,255,255))
 trash = target(800,494,(255,255,0),200,450)
-powerMeter = powergauge(100,200,50,150)
-bar = powerbar(100,200,50,150)
+#powerMeter = powergauge(100,200,50,150)
+#bar = powerbar(100,200,50,150)
 x = 0
 y = 0
 time = 0
@@ -132,13 +131,18 @@ shoot = False
 run = True
 changeX = 1
 changeY = 1
+dir = 300
 while run:
-
+    if shoot == False:
+        #pygame.draw.line(win,(0,0,0),(0,dir),(300,dir),3)
+        dir += 1
+        if dir == 300 or dir == 350-1:
+            dir *= -1
+        pygame.display.flip()
     if move == 50:
         move -=1 
     if move >= 0 and move < 50:
         move +=1
-
     if shoot:
         if paperBall.y < 500 - paperBall.radius:
             time += 0.01
